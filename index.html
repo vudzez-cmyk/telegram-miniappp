@@ -1,0 +1,52 @@
+const grid = document.getElementById('grid');
+const trapsText = document.getElementById('traps');
+
+let trapsCount = 1;
+let traps = [];
+
+function initGrid() {
+  grid.innerHTML = '';
+  traps = [];
+
+  while (traps.length < trapsCount) {
+    let r = Math.floor(Math.random() * 25);
+    if (!traps.includes(r)) traps.push(r);
+  }
+
+  for (let i = 0; i < 25; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+
+    cell.onclick = () => {
+      if (cell.classList.contains('open')) return;
+      cell.classList.add('open');
+      const span = document.createElement('span');
+
+      if (traps.includes(i)) {
+        cell.classList.add('trap');
+        span.textContent = '💣';
+      } else {
+        cell.classList.add('star');
+        span.textContent = '⭐';
+      }
+
+      cell.appendChild(span);
+    };
+
+    grid.appendChild(cell);
+  }
+}
+
+document.getElementById('plus').onclick = () => {
+  if (trapsCount < 24) trapsCount++;
+  trapsText.textContent = trapsCount + ' traps';
+};
+
+document.getElementById('minus').onclick = () => {
+  if (trapsCount > 1) trapsCount--;
+  trapsText.textContent = trapsCount + ' traps';
+};
+
+document.getElementById('play').onclick = initGrid;
+
+Telegram.WebApp.ready();
