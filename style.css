@@ -1,31 +1,115 @@
 body {
-  background: #0b1020;
+  background: radial-gradient(circle at top, #1b2440, #0b1020);
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
+/* HUD */
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+}
+
+.title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.coins {
+  font-size: 16px;
+}
+
+/* Farm */
 .farm {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  max-width: 320px;
-  margin: 20px auto;
+  gap: 12px;
+  max-width: 340px;
+  margin: 25px auto;
 }
 
 .plot {
-  background: #2e7d32;
-  border-radius: 10px;
-  height: 70px;
+  height: 72px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #2e7d32, #1b5e20);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 26px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.plot:hover {
+  transform: scale(1.05);
+}
+
+.plot.growing {
+  background: linear-gradient(145deg, #8bc34a, #558b2f);
+}
+
+.plot.ready {
+  background: linear-gradient(145deg, #ffd54f, #f9a825);
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.8);
+}
+
+/* Shop */
+.shop {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.shop button {
+  background: linear-gradient(145deg, #2196f3, #1565c0);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: white;
+  font-size: 14px;
   cursor: pointer;
 }
-.plot.growing {
-  background: #8bc34a;
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
-.plot.ready {
-  background: #fbc02d;
+
+.overlay.hidden {
+  display: none;
+}
+
+.modal {
+  background: #121b2f;
+  padding: 25px;
+  border-radius: 18px;
+  width: 80%;
+  max-width: 280px;
+}
+
+.modal h2 {
+  margin-bottom: 15px;
+}
+
+.modal button {
+  background: #1da1f2;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  color: white;
+  cursor: pointer;
 }
