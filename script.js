@@ -1,111 +1,73 @@
-const grid = document.getElementById("grid");
-const trapsText = document.getElementById("traps");
-const playBtn = document.getElementById("play");
-const scoreText = document.getElementById("score");
+const farm = document.getElementById("farm");
+const coinsEl = document.getElementById("coins");
 
-let trapsCount = 9;
-let traps = [];
-let openedStars = 0;
-let gameOver = false;
+let coins = 0;
+let selectedPlant = null;
 
-/* ---------------- GAME INIT ---------------- */
-
-function initGame() {
-  grid.innerHTML = "";
-  traps = [];
-  openedStars = 0;
-  gameOver = false;
-
-  scoreText.textContent = "0";
-
-  // generate bombs
-  while (traps.length < trapsCount) {
-    const r = Math.floor(Math.random() * 25);
-    if (!traps.includes(r)) traps.push(r);
-  }
-
-  for (let i = 0; i < 25; i++) {
-    const cell = document.createElement("div");
-    cell.className = "cell";
-
-    cell.onclick = () => {
-      if (gameOver) return;
-      if (cell.classList.contains("open")) return;
-
-      openCell(cell, i);
-    };
-
-    grid.appendChild(cell);
-  }
-
-  trapsText.textContent = trapsCount + " traps";
-}
-
-/* ---------------- CELL LOGIC ---------------- */
-
-function openCell(cell, index) {
-  cell.classList.add("open");
-  const span = document.createElement("span");
-
-  if (traps.includes(index)) {
-    // 💣 BOMB
-    span.textContent = "💣";
-    cell.classList.add("trap");
-    cell.appendChild(span);
-
-    gameOver = true;
-    disableGrid();
-    showAllBombs();
-
-    setTimeout(() => alert("💥 BOOM! You lose"), 100);
-  } else {
-    // ⭐ STAR
-    span.textContent = "⭐";
-    cell.classList.add("star");
-    cell.appendChild(span);
-
-    openedStars++;
-    scoreText.textContent = openedStars;
-
-    if (openedStars === 25 - trapsCount) {
-      gameOver = true;
-      disableGrid();
-      setTimeout(() => alert("🎉 YOU WIN!"), 100);
-    }
-  }
-}
-
-/* ---------------- HELPERS ---------------- */
-
-function disableGrid() {
-  document.querySelectorAll(".cell").forEach(cell => {
-    cell.onclick = null;
-  });
-}
-
-function showAllBombs() {
-  document.querySelectorAll(".cell").forEach((cell, index) => {
-    if (traps.includes(index) && !cell.classList.contains("open")) {
-      cell.classList.add("open", "trap");
-      cell.innerHTML = "<span>💣</span>";
-    }
-  });
-}
-
-/* ---------------- CONTROLS ---------------- */
-
-document.getElementById("plus").onclick = () => {
-  if (trapsCount < 24) trapsCount++;
-  trapsText.textContent = trapsCount + " traps";
+const plants = {
+  wheat: { time: 10000, icon: "🌾", reward: 1 },
+  corn: { time: 30000, icon: "🌽", reward: 3 }
 };
 
-document.getElementById("minus").onclick = () => {
-  if (trapsCount > 1) trapsCount--;
-  trapsText.textContent = trapsCount + " traps";
-};
+const plots = [];
 
-playBtn.onclick = initGame;
+/* ---------- INIT ---------- */
 
-/* ---------------- START ---------------- */
+for (let i = 0; i < 16; i++) {
+  const plot = document.createElement("div");
+  plot.className = "plot";
+  plot.textContent = "🟫";
 
-initGame();
+  plot.onclick = () => onPlotClick(i);
+
+  plots.push({
+    el: plot,
+    plant: null,
+    readyAt: null
+  });
+
+  farm.appendChild(plot);
+}
+
+/* ---------- PLANT ---------- */
+
+function plant(type) {
+  selectedPlant = type;
+}
+
+function onPlotClick(index) {
+  const plot = plots[index];
+
+  if (!plot.plant && selectedPlant) {
+    plot.plant = selectedPlant;
+    plot.readyAt = Date.now() + plants[selectedPlant].time;
+    plot.el.textContent = plants[selectedPlant].icon;
+    plot.el.classList.add("growing");
+    selectedPlant = null;
+  } else if (plot.plant && Date.now() >= plot.readyAt) {
+    harvest(plot);
+  }
+}
+
+/* ---------- HARVEST ---------- */
+
+function harvest(plot) {
+  coins += plants[plot.plant].reward;
+  coinsEl.textContent = "Coins: " + coins;
+
+  plot.plant = null;
+  plot.readyAt = null;
+  plot.el.textContent = "🟫";
+  plot.el.className = "plot";
+}
+
+/* ---------- TICK ---------- */
+
+setInterval(() => {
+  plots.forEach(plot => {
+    if (plot.plant && Date.now() >= plot.readyAt) {
+      plot.el.classList.remove("growing");
+      plot.el.classList.add("ready");
+    }
+  });
+}, 1000);
