@@ -1,52 +1,26 @@
-const grid = document.getElementById('grid');
-const trapsText = document.getElementById('traps');
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stars Grid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-let trapsCount = 1;
-let traps = [];
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-function initGrid() {
-  grid.innerHTML = '';
-  traps = [];
+<div class="app">
+  <div class="grid" id="grid"></div>
 
-  while (traps.length < trapsCount) {
-    let r = Math.floor(Math.random() * 25);
-    if (!traps.includes(r)) traps.push(r);
-  }
+  <div class="controls">
+    <button id="minus">◀</button>
+    <span id="traps">1 traps</span>
+    <button id="plus">▶</button>
+  </div>
 
-  for (let i = 0; i < 25; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cell';
+  <button id="play">Play</button>
+</div>
 
-    cell.onclick = () => {
-      if (cell.classList.contains('open')) return;
-      cell.classList.add('open');
-      const span = document.createElement('span');
-
-      if (traps.includes(i)) {
-        cell.classList.add('trap');
-        span.textContent = '💣';
-      } else {
-        cell.classList.add('star');
-        span.textContent = '⭐';
-      }
-
-      cell.appendChild(span);
-    };
-
-    grid.appendChild(cell);
-  }
-}
-
-document.getElementById('plus').onclick = () => {
-  if (trapsCount < 24) trapsCount++;
-  trapsText.textContent = trapsCount + ' traps';
-};
-
-document.getElementById('minus').onclick = () => {
-  if (trapsCount > 1) trapsCount--;
-  trapsText.textContent = trapsCount + ' traps';
-};
-
-document.getElementById('play').onclick = initGrid;
-
-Telegram.WebApp.ready();
+<script src="script.js"></script>
+</body>
+</html>
