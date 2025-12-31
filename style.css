@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  background: #0b1020;
+  font-family: sans-serif;
+  color: white;
+}
+
+.app {
+  max-width: 360px;
+  margin: auto;
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cell {
+  width: 100%;
+  padding-top: 100%;
+  background: #1d9bbf;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.cell.open.star {
+  background: #f5a623;
+}
+
+.cell.open.trap {
+  background: #c0392b;
+}
+
+.cell span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #1da1f2;
+  color: white;
+  font-size: 16px;
+}
