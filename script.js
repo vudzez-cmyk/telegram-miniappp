@@ -1,5 +1,7 @@
 const farm = document.getElementById("farm");
 const coinsEl = document.getElementById("coins");
+const overlay = document.getElementById("overlay");
+const overlayTitle = document.getElementById("overlay-title");
 
 let coins = 0;
 let selectedPlant = null;
@@ -11,8 +13,7 @@ const plants = {
 
 const plots = [];
 
-/* ---------- INIT ---------- */
-
+/* INIT */
 for (let i = 0; i < 16; i++) {
   const plot = document.createElement("div");
   plot.className = "plot";
@@ -29,8 +30,7 @@ for (let i = 0; i < 16; i++) {
   farm.appendChild(plot);
 }
 
-/* ---------- PLANT ---------- */
-
+/* GAME */
 function plant(type) {
   selectedPlant = type;
 }
@@ -44,16 +44,15 @@ function onPlotClick(index) {
     plot.el.textContent = plants[selectedPlant].icon;
     plot.el.classList.add("growing");
     selectedPlant = null;
-  } else if (plot.plant && Date.now() >= plot.readyAt) {
+  } 
+  else if (plot.plant && Date.now() >= plot.readyAt) {
     harvest(plot);
   }
 }
 
-/* ---------- HARVEST ---------- */
-
 function harvest(plot) {
   coins += plants[plot.plant].reward;
-  coinsEl.textContent = "Coins: " + coins;
+  coinsEl.textContent = coins;
 
   plot.plant = null;
   plot.readyAt = null;
@@ -61,8 +60,7 @@ function harvest(plot) {
   plot.el.className = "plot";
 }
 
-/* ---------- TICK ---------- */
-
+/* TIMER */
 setInterval(() => {
   plots.forEach(plot => {
     if (plot.plant && Date.now() >= plot.readyAt) {
@@ -71,3 +69,13 @@ setInterval(() => {
     }
   });
 }, 1000);
+
+/* OVERLAY */
+function showOverlay(text) {
+  overlayTitle.textContent = text;
+  overlay.classList.remove("hidden");
+}
+
+function closeOverlay() {
+  overlay.classList.add("hidden");
+}
