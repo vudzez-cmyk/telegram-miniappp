@@ -1,23 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Mini Farm</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-</head>
 <body>
 
-<h2>🌾 Mini Farm</h2>
-<div id="coins">Coins: 0</div>
+<div class="hud">
+  <div class="title">🌾 Mini Farm</div>
+  <div class="coins">💰 <span id="coins">0</span></div>
+</div>
 
 <div class="farm" id="farm"></div>
 
 <div class="shop">
-  <button onclick="plant('wheat')">Plant 🌾 (10s)</button>
-  <button onclick="plant('corn')">Plant 🌽 (30s)</button>
+  <button onclick="plant('wheat')">🌾 Wheat (10s)</button>
+  <button onclick="plant('corn')">🌽 Corn (30s)</button>
 </div>
 
-<script src="script.js"></script>
+<!-- Overlay -->
+<div class="overlay hidden" id="overlay">
+  <div class="modal">
+    <h2 id="overlay-title"></h2>
+    <button onclick="closeOverlay()">OK</button>
+  </div>
+</div>
+
+<script src="script.js?v=4"></script>
 </body>
-</html>
